@@ -2,20 +2,32 @@
   <button id="add" type="button" class="btn btn-info mx-3" @click="addE">Add event</button>
   <button id="edit" type="button" class="btn btn-info mx-3" @click="editE">Edit event</button>
   <button id="delete" type="button" class="btn btn-info mx-3" @click="delE">Delete event</button>
+  <button type="button" class="btn btn-info mx-3" @click="openModal">Open Modal</button>
+  <CalendarDb />
+
   <div id="app">
     <CalendarMonth/>
+    <router-view></router-view>
+
+    <AppModal ref="modal">
+      <p>hi</p>
+    </AppModal> 
   </div>
 </template>
 
 <script>
 import CalendarMonth from "./components/CalendarMonth.vue";
+import CalendarDb from "./components/CalendarDb.vue";
+import AppModal from "./components/AppModal.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 
 export default {
   name: "App",
 
   components: {
-    CalendarMonth
+    CalendarMonth,
+    CalendarDb,
+    AppModal
   },
 
   // button functionality
@@ -28,6 +40,9 @@ export default {
         },
         delE() { // add event function
           alert('Delete Event!');
+        },
+        openModal() {
+          this.$refs.modal.showModal();
         }
     }
 };
