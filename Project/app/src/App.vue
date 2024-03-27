@@ -1,4 +1,7 @@
 <template>
+  <button id="add" type="button" class="btn btn-info mx-3" @click="addE">Add event</button>
+  <button id="edit" type="button" class="btn btn-info mx-3" @click="editE">Edit event</button>
+  <button id="delete" type="button" class="btn btn-info mx-3" @click="delE">Delete event</button>
   <div id="app">
     <CalendarMonth/>
   </div>
@@ -6,14 +9,27 @@
 
 <script>
 import CalendarMonth from "./components/CalendarMonth.vue";
-
+import 'bootstrap/dist/css/bootstrap.css';
 
 export default {
   name: "App",
 
   components: {
     CalendarMonth
-  }
+  },
+
+  // button functionality
+  methods: {
+        addE() { // add event function
+            alert('Add Event!');
+        },
+        editE() { // edit event function
+          alert('Edit Event!');
+        },
+        delE() { // add event function
+          alert('Delete Event!');
+        }
+    }
 };
 </script>
 
