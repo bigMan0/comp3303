@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <button id="add" type="button" class="btn btn-info mx-3" @click="toggleForm">Add event</button>
-    <button id="edit" type="button" class="btn btn-info mx-3" @click="editE">Edit event</button>
+    <button id="edit" type="button" class="btn btn-info mx-3" @click="toggleEditForm">Edit event</button>
     <button id="delete" type="button" class="btn btn-info mx-3" @click="toggleDeleteForm">Delete event</button>
     <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">Open Modal</button>
 
@@ -12,6 +12,7 @@
       </template>
     </AppModal>
 
+    <!--Add event form-->
     <div v-if="showForm">
       <h2>Add Event</h2>
       <form @submit.prevent="addEvent">
@@ -41,6 +42,36 @@
       </ul>
     </div>
 
+    <!--Edit event list-->
+    <div v-if="showEditList">
+      <h2>Edit Event</h2>
+      <ul>
+        <li v-for="event in events" :key="event._id">
+          {{ event.title }} - {{ formatDate(event.date) }} - {{ event.type }}
+          <button @click="editEvent(event)">Edit</button>
+        </li>
+      </ul>
+    </div>
+
+    <!--Edit event form-->
+    <div v-if="showEditForm">
+      <h2>Edit Event</h2>
+      <form @submit.prevent="updateEvent">
+        <label for="editTitle">Title:</label>
+        <input type="text" id="editTitle" v-model="editingEvent.title" required>
+        <label for="editDate">Date:</label>
+        <input type="date" id="editDate" v-model="editingEvent.date" required>
+        <label for="editType">Type:</label>
+        <select id="editType" v-model="editingEvent.type" required>
+          <option value="">Select type</option>
+          <option value="event">Event</option>
+          <option value="task">Task</option>
+          <option value="reminder">Reminder</option>
+        </select>
+        <button type="submit">Update</button>
+      </form>
+    </div>
+
     <CalendarMonth/>
     <router-view></router-view>
   </div>
@@ -65,6 +96,14 @@ export default {
     toggleDeleteForm() {
       this.showDeleteForm = !this.showDeleteForm;
       if (this.showDeleteForm) {
+        this.fetchEvents();
+      }
+    },
+    async toggleEditForm() {
+      this.showEditList = !this.showEditList;
+      this.showForm = false; // Close the add event form
+      this.showDeleteForm = false; // Close the delete event form
+      if (this.showEditList) {
         this.fetchEvents();
       }
     },
@@ -97,7 +136,6 @@ export default {
         console.error('Error fetching events:', error.message);
       }
     },
-
     async deleteEvent(eventId) {
       try {
         // Send a DELETE request to the backend endpoint '/calendar/:id'
@@ -105,16 +143,31 @@ export default {
         
         // Fetch updated events after deletion
         this.fetchEvents();
-
-        //Reload page 
-        window.location.reload();
       } catch (error) {
         console.error('Error deleting event:', error.message);
       }
     },
+    editEvent(event) {
+      this.showEditForm = true;
+      this.editingEvent = { ...event };
+    },
+    async updateEvent() {
+      try {
+        const { _id, title, date, type } = this.editingEvent;
+        // Send a PUT request to the backend endpoint '/calendar/:id'
+        await axios.put(`http://localhost:3001/calendar/${_id}`, { title, date, type });
+        
+        // Fetch updated events after updating
+        this.fetchEvents();
 
-    editE() { // Edit event function
-      alert('Edit Event!');
+        // Hide the edit form
+        this.showEditForm = false;
+
+        window.location.reload();
+      } catch (error) {
+        console.
+        console.error('Error updating event:', error.message);
+      }
     },
     formatDate(date) {
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -126,13 +179,15 @@ export default {
       showModal: false,
       showForm: false,
       showDeleteForm: false,
+      showEditList: false,
+      showEditForm: false,
       events: [],
-      event: { title: '', date: '', type: '' } // Object to hold the form data
+      event: { title: '', date: '', type: '' },
+      editingEvent: { title: '', date: '', type: '' }
     };
   }
 };
 </script>
-
 
 <style>
 #app {

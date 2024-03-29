@@ -61,9 +61,10 @@ app.put('/calendar/:id', async(req, res) => {
             return res.status(404).json({message: `cannot find any contact with ID ${id}`})
         }
         const updatedContact = await Calendar.findById(id);
-        res.status(200).json(updatedCalendar);
+        res.status(200).json(cal);
         
     } catch (error) {
+        console.error('Error updating event:', error);
         res.status(500).json({message: error.message})
     }
 })
