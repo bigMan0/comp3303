@@ -3,7 +3,7 @@
     <button id="add" type="button" class="btn btn-info mx-3" @click="toggleForm">Add event</button>
     <button id="edit" type="button" class="btn btn-info mx-3" @click="toggleEditForm">Edit event</button>
     <button id="delete" type="button" class="btn btn-info mx-3" @click="toggleDeleteForm">Delete event</button>
-    <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">Open Modal</button>
+    <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">List of events</button>
 
     <AppModal v-if="showModal" @close="showModal = false">
       <!-- Modal content -->
@@ -170,9 +170,16 @@ export default {
       }
     },
     formatDate(date) {
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(date).toLocaleDateString(undefined, options);
-    },
+    // Increment the day by one
+    const adjustedDate = new Date(date);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
+
+    // Define options for date formatting
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    // Return formatted date string
+    return adjustedDate.toLocaleDateString(undefined, options);
+  },
   },
   data() {
     return {
