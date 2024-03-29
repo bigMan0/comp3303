@@ -39,14 +39,15 @@ app.get('/calendar/:id', async(req, res) =>{
 })
 
 //create a contact
-app.post('/calendar', async(req, res) => { // async and await when we don't know when they will come back
+app.post('/calendar', async (req, res) => {
     try {
-        const cal = await Calendar.create(req.body)
-        res.status(200).json(cal);
-        
+        const { title, date, type } = req.body;
+        const event = new Calendar({ title, date, type });
+        await event.save();
+        res.status(201).json(event);
     } catch (error) {
-        console.log(error.message);
-        res.status(500).json({message: error.message})
+        console.error('Error adding event:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 

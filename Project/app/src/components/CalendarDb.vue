@@ -38,6 +38,7 @@ export default {
   methods: {
     formatDate(dateString) {
       const date = new Date(dateString);
+      date.setDate(date.getDate() + 1);
       return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     },
 

@@ -2,10 +2,6 @@ const mongoose = require('mongoose')
 
 const contactSchema = mongoose.Schema(
     { // the _id will do it itself in mongodb
-        id: {
-            type: String,
-            required: true,
-        },
         title: {
             type: String,
             required: [true, "Please enter a event title"]
