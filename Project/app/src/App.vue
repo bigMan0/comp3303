@@ -2,7 +2,7 @@
   <div id="app">
     <button id="add" type="button" class="btn btn-info mx-3" @click="toggleForm">Add event</button>
     <button id="edit" type="button" class="btn btn-info mx-3" @click="editE">Edit event</button>
-    <button id="delete" type="button" class="btn btn-info mx-3" @click="delE">Delete event</button>
+    <button id="delete" type="button" class="btn btn-info mx-3" @click="toggleDeleteForm">Delete event</button>
     <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">Open Modal</button>
 
     <AppModal v-if="showModal" @close="showModal = false">
@@ -30,6 +30,17 @@
       </form>
     </div>
 
+    <!-- Delete event form -->
+    <div v-if="showDeleteForm">
+      <h2>Delete Event</h2>
+      <ul>
+        <li v-for="event in events" :key="event._id">
+          {{ event.title }} - {{ formatDate(event.date) }} - {{ event.type }}
+          <button @click="deleteEvent(event._id)">Delete</button>
+        </li>
+      </ul>
+    </div>
+
     <CalendarMonth/>
     <router-view></router-view>
   </div>
@@ -51,6 +62,12 @@ export default {
     toggleForm() {
       this.showForm = !this.showForm;
     },
+    toggleDeleteForm() {
+      this.showDeleteForm = !this.showDeleteForm;
+      if (this.showDeleteForm) {
+        this.fetchEvents();
+      }
+    },
     async addEvent() {
       try {
         // Send a POST request to the backend endpoint '/calendar'
@@ -65,31 +82,56 @@ export default {
         // Hide the form
         this.showForm = false;
 
+        // Reload the page
         window.location.reload();
       } catch (error) {
         console.error('Error adding event:', error.message);
       }
     },
+    async fetchEvents() {
+      try {
+        // Fetch all events from the backend
+        const response = await axios.get('http://localhost:3001/calendar');
+        this.events = response.data;
+      } catch (error) {
+        console.error('Error fetching events:', error.message);
+      }
+    },
+
+    async deleteEvent(eventId) {
+      try {
+        // Send a DELETE request to the backend endpoint '/calendar/:id'
+        await axios.delete(`http://localhost:3001/calendar/${eventId}`);
+        
+        // Fetch updated events after deletion
+        this.fetchEvents();
+
+        //Reload page 
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting event:', error.message);
+      }
+    },
+
     editE() { // Edit event function
       alert('Edit Event!');
     },
-    delE() { // Delete event function
-      alert('Delete Event!');
-    }
+    formatDate(date) {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(date).toLocaleDateString(undefined, options);
+    },
   },
   data() {
     return {
       showModal: false,
       showForm: false,
+      showDeleteForm: false,
+      events: [],
       event: { title: '', date: '', type: '' } // Object to hold the form data
     };
   }
 };
 </script>
-
-<style>
-/* Your styles */
-</style>
 
 
 <style>
