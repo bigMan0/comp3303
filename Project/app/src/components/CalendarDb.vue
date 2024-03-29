@@ -1,7 +1,10 @@
 <template>
   <div>
-    <strong>{{ getTitleByDate('2024-03-14') }}</strong>
-    <!-- Replace '2024-03-28' with the date you want to check -->
+    <ul>
+      <li v-for="post in posts" :key="post._id">
+        <strong>{{ post.title }}</strong> - {{ formatDate(post.date) }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -9,6 +12,9 @@
 import axios from 'axios';
 
 export default {
+  props: {
+    date: String 
+  },
   data() {
     return {
       posts: [],
@@ -17,19 +23,24 @@ export default {
   },
 
   async created() {
-  try {
-    const response = await axios.get('http://localhost:3001/calendar', {
-      params: {
-        date: this.$attrs.date // Get date passed as prop from parent component
-      }
-    });
-    this.posts = response.data;
-  } catch (e) {
-    this.errors.push(e);
-  }
-},
+    try {
+      const response = await axios.get('http://localhost:3001/calendar', {
+        params: {
+          date: this.date 
+        }
+      });
+      this.posts = response.data;
+    } catch (e) {
+      this.errors.push(e);
+    }
+  },
 
   methods: {
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    },
+
     getTitleByDate(date) {
       const post = this.posts.find(post => post.date.substring(0, 10) === date);
       return post ? post.title : 'No title found';

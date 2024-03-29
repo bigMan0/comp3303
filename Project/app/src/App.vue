@@ -1,50 +1,52 @@
 <template>
-  <button id="add" type="button" class="btn btn-info mx-3" @click="addE">Add event</button>
-  <button id="edit" type="button" class="btn btn-info mx-3" @click="editE">Edit event</button>
-  <button id="delete" type="button" class="btn btn-info mx-3" @click="delE">Delete event</button>
-  <button type="button" class="btn btn-info mx-3" @click="openModal">Open Modal</button>
-
-
   <div id="app">
+    <button id="add" type="button" class="btn btn-info mx-3" @click="addE">Add event</button>
+    <button id="edit" type="button" class="btn btn-info mx-3" @click="editE">Edit event</button>
+    <button id="delete" type="button" class="btn btn-info mx-3" @click="delE">Delete event</button>
+    <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">Open Modal</button>
+
+    <AppModal v-if="showModal" @close="showModal = false">
+      <!-- Modal content -->
+      <template v-slot:default>
+        <button @click="showModal = false">Close Modal</button>
+      </template>
+    </AppModal>
+
     <CalendarMonth/>
     <router-view></router-view>
-
-    <AppModal ref="modal">
-      <p>hi</p>
-    </AppModal> 
   </div>
 </template>
 
 <script>
 import CalendarMonth from "./components/CalendarMonth.vue";
-import AppModal from "./components/AppModal.vue";
-import 'bootstrap/dist/css/bootstrap.css';
+import AppModal from "./components/AppModal.vue"; 
 
 export default {
   name: "App",
-
   components: {
     CalendarMonth,
-    AppModal
+    AppModal,
   },
-
-  // button functionality
+  // Button functionality
   methods: {
-        addE() { // add event function
-            alert('Add Event!');
-        },
-        editE() { // edit event function
-          alert('Edit Event!');
-        },
-        delE() { // add event function
-          alert('Delete Event!');
-        },
-        openModal() {
-          this.$refs.modal.showModal();
-        }
+    addE() { // Add event function
+      alert('Add Event!');
+    },
+    editE() { // Edit event function
+      alert('Edit Event!');
+    },
+    delE() { // Delete event function
+      alert('Delete Event!');
     }
+  },
+  data() {
+    return {
+      showModal: false
+    };
+  }
 };
 </script>
+
 
 <style>
 #app {
