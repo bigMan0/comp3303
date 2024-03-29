@@ -64,6 +64,8 @@ export default {
 
         // Hide the form
         this.showForm = false;
+
+        window.location.reload();
       } catch (error) {
         console.error('Error adding event:', error.message);
       }
