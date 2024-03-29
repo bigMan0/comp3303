@@ -3,7 +3,7 @@
   <button id="edit" type="button" class="btn btn-info mx-3" @click="editE">Edit event</button>
   <button id="delete" type="button" class="btn btn-info mx-3" @click="delE">Delete event</button>
   <button type="button" class="btn btn-info mx-3" @click="openModal">Open Modal</button>
-  <CalendarDb />
+
 
   <div id="app">
     <CalendarMonth/>
@@ -17,7 +17,6 @@
 
 <script>
 import CalendarMonth from "./components/CalendarMonth.vue";
-import CalendarDb from "./components/CalendarDb.vue";
 import AppModal from "./components/AppModal.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -26,7 +25,6 @@ export default {
 
   components: {
     CalendarMonth,
-    CalendarDb,
     AppModal
   },
 

@@ -7,17 +7,51 @@
     }"
   >
     <span>{{ label }}</span>
-    <div v-if="label === '9' && day.isCurrentMonth" class="event-box">
-      <div class="event-title">hello</div>
+    <div v-if="hasEventForDay" class="event-box">
+      <div class="event-title">{{ eventTitle }}</div>
     </div>
   </li>
 </template>
 
 <script>
 import dayjs from "dayjs";
+import axios from 'axios';
 
 export default {
   name: "CalendarMonthDayItem",
+
+  data() {
+    return {
+      posts: [],
+      errors: [],
+      hasEventForDay: false,
+      eventTitle: ''
+    };
+  },
+
+  async created() {
+    try {
+      const response = await axios.get('http://localhost:3001/calendar', {
+        params: {
+          date: this.day.date // Use the date associated with the calendar item
+        }
+      });
+      this.posts = response.data;
+      this.hasEventForDay = this.posts.some(post => post.date.substring(0, 10) === this.day.date);
+      if (this.hasEventForDay) {
+        this.eventTitle = this.getTitleByDate(this.day.date);
+      }
+    } catch (e) {
+      this.errors.push(e);
+    }
+  },
+
+  methods: {
+    getTitleByDate(date) {
+      const post = this.posts.find(post => post.date.substring(0, 10) === date);
+      return post ? post.title : 'No title found';
+    }
+  },
 
   props: {
     day: {
