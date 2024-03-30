@@ -23,7 +23,7 @@
   .calendar-date-indicator {
     font-size: 24px;
     font-weight: 600;
-    color: var(--grey-00);
+    color: #98827c;
   }
   </style>
   

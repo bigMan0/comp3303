@@ -46,7 +46,9 @@
     }
   };
   </script>
+
   <style>
+  /* pop up screen */
   .modal-backdrop {
     position: fixed;
     top: 0;
@@ -72,7 +74,12 @@
   .modal-body {
     padding: 20px;
   }
-  
+
+  header button {
+    width: 25px;
+    height: 25px;
+  }
+
   ul {
     list-style-type: none;
     padding: 0;

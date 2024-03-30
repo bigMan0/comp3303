@@ -84,7 +84,7 @@ export default {
   min-height: 100px;
   font-size: 16px;
   background-color: #fff;
-  color: var(--grey-800);
+  color: #98827c;
   padding: 5px;
 }
 
@@ -97,32 +97,41 @@ export default {
   width: var(--day-label-size);
   height: var(--day-label-size);
 }
+
+/* displaying the events */
 .event-box {
   position: absolute;
   top: 25px;
   left: 15px;
-  padding: 10px;
-  width: calc(80% - 10px);
-  height: calc(80% - 10px);
-  border: 2px solid #000;
+  padding-top: 3px;
+  width: calc(90% - 10px);
+  border: 2px solid #d1ab4a;
+  background-color: #edC971;
+  text-align: left;
+  color: #000;
+  word-wrap: break-word;
 }
 
 .event-title {
+  font-size: small;
   font-weight: bold;
-  padding: 5px;
+  padding: 2px 4px;
+  text-wrap: pretty;
 }
+
 .calendar-day--not-current {
-  background-color: var(--grey-100);
-  color: var(--grey-300);
+  background-color: #e7f0f4;
+  color: #b5c0cd;;
 }
 
 .calendar-day--today {
   padding-top: 4px;
+  background-color: #cddee6;
 }
 
 .calendar-day--today > span {
   color: #fff;
   border-radius: 9999px;
-  background-color: var(--grey-800);
+  background-color: #5e7481;
 }
 </style>

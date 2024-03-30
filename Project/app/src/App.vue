@@ -3,7 +3,7 @@
     <button id="add" type="button" class="btn btn-info mx-3" @click="toggleForm">Add event</button>
     <button id="edit" type="button" class="btn btn-info mx-3" @click="toggleEditForm">Edit event</button>
     <button id="delete" type="button" class="btn btn-info mx-3" @click="toggleDeleteForm">Delete event</button>
-    <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">Open Modal</button>
+    <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">List of events</button>
 
     <AppModal v-if="showModal" @close="showModal = false">
       <!-- Modal content -->
@@ -27,14 +27,14 @@
           <option value="task">Task</option>
           <option value="reminder">Reminder</option>
         </select>
-        <button type="submit">Add</button>
+        <button class="addButton" type="submit">Add</button>
       </form>
     </div>
 
     <!-- Delete event form -->
     <div v-if="showDeleteForm">
       <h2>Delete Event</h2>
-      <ul>
+      <ul class="deleteList">
         <li v-for="event in events" :key="event._id">
           {{ event.title }} - {{ formatDate(event.date) }} - {{ event.type }}
           <button @click="deleteEvent(event._id)">Delete</button>
@@ -45,7 +45,7 @@
     <!--Edit event list-->
     <div v-if="showEditList">
       <h2>Edit Event</h2>
-      <ul>
+      <ul class="editList">
         <li v-for="event in events" :key="event._id">
           {{ event.title }} - {{ formatDate(event.date) }} - {{ event.type }}
           <button @click="editEvent(event)">Edit</button>
@@ -196,16 +196,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 30px;
 }
 
 body {
+  background-color: snow;
   font-family: sans-serif;
   font-weight: 100;
-  --grey-100: #e4e9f0;
-  --grey-200: #cfd7e3;
-  --grey-300: #b5c0cd;
-  --grey-800: #3e4e63;
   --grid-gap: 1px;
   --day-label-size: 20px;
 }
@@ -220,7 +217,45 @@ li {
 .calendar-month-header {
   display: flex;
   justify-content: space-between;
-  background-color: #fff;
+  background-color: snow;
   padding: 10px;
+}
+
+/* main buttons */
+button {
+  color: white;
+  background-color: #b29790;
+  border-color: #98827c;
+  margin: 1%;
+  margin-bottom: 2%;
+  width: 120px;
+  height: 30px;
+  font-size: 14px;
+}
+
+/* form format */
+form label {
+  padding-left: 10px;
+}
+
+form input, form select {
+  margin-left: 2px;
+}
+
+.editList li {
+  margin-top: -1.5%;
+}
+
+.deleteList li {
+  margin-top: -1.5%;
+}
+
+.deleteList button, .editList button, .addButton {
+  width: 60px;
+  height: 30px;
+}
+
+h2 {
+  margin-bottom: -1%;
 }
 </style>

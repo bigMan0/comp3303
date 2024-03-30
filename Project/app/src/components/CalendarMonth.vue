@@ -161,14 +161,13 @@
   <style scoped>
   .calendar-month {
     position: relative;
-    background-color: var(--grey-200);
-    border: solid 1px var(--grey-300);
+    background-color: #5e7481;
   }
   
   .day-of-week {
-    color: var(--grey-800);
+    color: white;
     font-size: 18px;
-    background-color: #fff;
+    background-color: #5e7481;
     padding-bottom: 5px;
     padding-top: 10px;
   }
@@ -189,7 +188,6 @@
     position: relative;
     grid-column-gap: var(--grid-gap);
     grid-row-gap: var(--grid-gap);
-    border-top: solid 1px var(--grey-200);
   }
   </style>
   

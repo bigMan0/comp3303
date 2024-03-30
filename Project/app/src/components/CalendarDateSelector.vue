@@ -1,7 +1,7 @@
 <template>
     <div class="calendar-date-selector">
       <span @click="selectPrevious">&lt;</span>
-      <span @click="selectCurrent">Today</span>
+      <span @click="selectCurrent"><strong>Today</strong></span>
       <span @click="selectNext">&gt;</span>
     </div>
   </template>
@@ -48,7 +48,7 @@
     display: flex;
     justify-content: space-between;
     width: 80px;
-    color: var(--grey-800);
+    color: #98827c;
   }
   
   .calendar-date-selector > * {
