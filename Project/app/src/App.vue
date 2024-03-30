@@ -143,6 +143,7 @@ export default {
         
         // Fetch updated events after deletion
         this.fetchEvents();
+        window.location.reload();
       } catch (error) {
         console.error('Error deleting event:', error.message);
       }
