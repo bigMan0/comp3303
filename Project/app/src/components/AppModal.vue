@@ -10,8 +10,10 @@
             <slot name="header">
               List of All Events
             </slot>
+            
             <button type="button" class="btn-close" @click="close" aria-label="Close modal">
               x
+            
             </button>
           </header>
   

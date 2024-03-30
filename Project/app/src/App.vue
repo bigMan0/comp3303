@@ -170,9 +170,16 @@ export default {
       }
     },
     formatDate(date) {
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(date).toLocaleDateString(undefined, options);
-    },
+    // Increment the day by one
+    const adjustedDate = new Date(date);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
+
+    // Define options for date formatting
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+    // Return formatted date string
+    return adjustedDate.toLocaleDateString(undefined, options);
+  },
   },
   data() {
     return {
