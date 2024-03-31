@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
-const contactSchema = mongoose.Schema(
-    { // the _id will do it itself in mongodb
-        title: {
+const calendarSchema = mongoose.Schema(
+    { // the _id will generate itself in mongodb
+        title: { // title of the event
             type: String,
             required: [true, "Please enter a event title"]
         },
-        date: {
+        date: { // date that the event is on and wil be displayed
             type: Date,
             required: [true, "Please enter a date"]
         },
-        type: {
+        type: { // type of event, task or reminder
             type: String,
             required: true,
             default: "NULL"
@@ -18,6 +18,6 @@ const contactSchema = mongoose.Schema(
     }
 )
 
-// Node-Api is the database, My_contacts is the file
-const Calendar = mongoose.model('calendar', contactSchema, 'cal');
+// calendar is the database, cal is the file/table that is being used
+const Calendar = mongoose.model('calendar', calendarSchema, 'cal');
 module.exports = Calendar;
