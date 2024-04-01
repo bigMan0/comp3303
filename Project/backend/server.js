@@ -1,3 +1,10 @@
+/* COMP 3033 - Full-Stack Cloud Computing
+   Final Project: Calendar Web Application
+   Authors: Cameron Burgoyne (162210b) and Kylie DeViller (162298d)
+   Date: April 5 2024 */
+
+/* Server file to connect to the database */
+
 const express = require('express')
 const mongoose = require('mongoose')
 const Calendar = require('./models/calendarModel.js')

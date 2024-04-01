@@ -1,3 +1,10 @@
+<!-- COMP 3033 - Full-Stack Cloud Computing
+     Final Project: Calendar Web Application
+     Authors: Cameron Burgoyne (162210b) and Kylie DeViller (162298d)
+     Date: April 5 2024 -->
+
+<!--Formatting the month file-->
+     
 <template>
     <div class="calendar-month">
       <div class="calendar-month-header">
@@ -27,9 +34,12 @@
   </template>
   
   <script>
+  // importing the day.js library and its functionalities
   import dayjs from "dayjs";
   import weekday from "dayjs/plugin/weekday";
   import weekOfYear from "dayjs/plugin/weekOfYear";
+
+  // importing the other files needed
   import CalendarMonthDayItem from "./CalendarMonthDayItem";
   import CalendarDateIndicator from "./CalendarDateIndicator";
   import CalendarDateSelector from "./CalendarDateSelector";
@@ -42,6 +52,7 @@
   export default {
     name: "CalendarMonth",
   
+    // adding the imports
     components: {
       CalendarMonthDayItem,
       CalendarDateIndicator,
@@ -64,18 +75,22 @@
         ];
       },
   
+      // returning the current date
       today() {
         return dayjs().format("YYYY-MM-DD");
       },
   
+      // setting months to return type
       month() {
         return Number(this.selectedDate.format("M"));
       },
   
+      // setting year to return type
       year() {
         return Number(this.selectedDate.format("YYYY"));
       },
   
+      // returning the number of days in the selected month
       numberOfDaysInMonth() {
         return dayjs(this.selectedDate).daysInMonth();
       },
@@ -159,6 +174,7 @@
   </script>
   
   <style scoped>
+  /* styling for the actual layout of the calendar */
   .calendar-month {
     position: relative;
     background-color: #5e7481;

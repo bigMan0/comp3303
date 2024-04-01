@@ -1,10 +1,19 @@
+<!-- COMP 3033 - Full-Stack Cloud Computing
+     Final Project: Calendar Web Application
+     Authors: Cameron Burgoyne (162210b) and Kylie DeViller (162298d)
+     Date: April 5 2024 -->
+
+<!--Main Application File-->
+
 <template>
   <div id="app">
-    <button id="add" type="button" class="btn btn-info mx-3" @click="toggleForm">Add event</button>
-    <button id="edit" type="button" class="btn btn-info mx-3" @click="toggleEditForm">Edit event</button>
-    <button id="delete" type="button" class="btn btn-info mx-3" @click="toggleDeleteForm">Delete event</button>
-    <button type="button" class="btn btn-info mx-3" @click="showModal = !showModal">List of events</button>
+    <!--Buttons-->
+    <button id="add" type="button" @click="toggleForm">Add event</button>
+    <button id="edit" type="button" @click="toggleEditForm">Edit event</button>
+    <button id="delete" type="button" @click="toggleDeleteForm">Delete event</button>
+    <button type="button" @click="showModal = !showModal">List of events</button>
 
+    <!--Modal for list of events-->
     <AppModal v-if="showModal" @close="showModal = false">
       <!-- Modal content -->
       <template v-slot:default>
@@ -16,11 +25,13 @@
     <div v-if="showForm">
       <h2>Add Event</h2>
       <form @submit.prevent="addEvent">
+        <!--Fields to fill-->
         <label for="title">Title:</label>
         <input type="text" id="title" v-model="event.title" required>
         <label for="date">Date:</label>
         <input type="date" id="date" v-model="event.date" required>
         <label for="type">Type:</label>
+        <!--Drop down menu-->
         <select id="type" v-model="event.type" required>
           <option value="">Select type</option>
           <option value="event">Event</option>
@@ -57,11 +68,13 @@
     <div v-if="showEditForm">
       <h2>Edit Event</h2>
       <form @submit.prevent="updateEvent">
+        <!--Input feilds-->
         <label for="editTitle">Title:</label>
         <input type="text" id="editTitle" v-model="editingEvent.title" required>
         <label for="editDate">Date:</label>
         <input type="date" id="editDate" v-model="editingEvent.date" required>
         <label for="editType">Type:</label>
+        <!--Drop down menu-->
         <select id="editType" v-model="editingEvent.type" required>
           <option value="">Select type</option>
           <option value="event">Event</option>
@@ -78,8 +91,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import CalendarMonth from "./components/CalendarMonth.vue";
+import axios from "axios"; // importing axios library
+import CalendarMonth from "./components/CalendarMonth.vue"; // importing other files
 import AppModal from "./components/AppModal.vue";
 
 export default {
@@ -88,88 +101,105 @@ export default {
     CalendarMonth,
     AppModal,
   },
-  // Button functionality
+
+  // button functionalities for forms
   methods: {
     toggleForm() {
       this.showForm = !this.showForm;
     },
+
+    // toggle the delete form 
     toggleDeleteForm() {
       this.showDeleteForm = !this.showDeleteForm;
       if (this.showDeleteForm) {
         this.fetchEvents();
       }
     },
+
+    // toggle the edit form
     async toggleEditForm() {
       this.showEditList = !this.showEditList;
-      this.showForm = false; // Close the add event form
-      this.showDeleteForm = false; // Close the delete event form
+      this.showForm = false; // close the add event form
+      this.showDeleteForm = false; // close the delete event form
       if (this.showEditList) {
         this.fetchEvents();
       }
     },
+
     async addEvent() {
       try {
-        // Send a POST request to the backend endpoint '/calendar'
+        // send a POST request to the backend endpoint: '/calendar'
         const response = await axios.post('http://localhost:3001/calendar', this.event);
         
-        // Log the response data
+        // log the response data
         console.log('Event added successfully:', response.data);
 
-        // Reset the form after adding the event
+        // reset the form after adding the event
         this.event = { title: '', date: '', type: '' };
 
-        // Hide the form
+        // hide the form
         this.showForm = false;
 
-        // Reload the page
+        // reload the page to update the calendar automatically
         window.location.reload();
-      } catch (error) {
+      } catch (error) { // catching errors
         console.error('Error adding event:', error.message);
       }
     },
+
+    // getting events
     async fetchEvents() {
       try {
-        // Fetch all events from the backend
+        // fetch all events from the backend at url
         const response = await axios.get('http://localhost:3001/calendar');
         this.events = response.data;
-      } catch (error) {
+      } catch (error) { // catching errors
         console.error('Error fetching events:', error.message);
       }
     },
+
+    // deleting event funtionalities
     async deleteEvent(eventId) {
       try {
-        // Send a DELETE request to the backend endpoint '/calendar/:id'
-        await axios.delete(`http://localhost:3001/calendar/${eventId}`);
+        // send a DELETE request to the backend endpoint '/calendar/:id'
+        await axios.delete(`http://localhost:3001/calendar/${eventId}`); // _id is the id that is generated by mongo
         
-        // Fetch updated events after deletion
+        // fetch updated events after deletion
         this.fetchEvents();
         window.location.reload();
-      } catch (error) {
+      } catch (error) { // catching errors
         console.error('Error deleting event:', error.message);
       }
     },
+
+    // edit event functionality
     editEvent(event) {
       this.showEditForm = true;
       this.editingEvent = { ...event };
     },
+
+    // update event functionality
     async updateEvent() {
       try {
         const { _id, title, date, type } = this.editingEvent;
-        // Send a PUT request to the backend endpoint '/calendar/:id'
-        await axios.put(`http://localhost:3001/calendar/${_id}`, { title, date, type });
+
+        // send a PUT request to the backend endpoint '/calendar/:id'
+        await axios.put(`http://localhost:3001/calendar/${_id}`, { title, date, type }); // _id is generated by mongo
         
-        // Fetch updated events after updating
+        // fetch updated events after updating
         this.fetchEvents();
 
-        // Hide the edit form
+        // hide the edit form
         this.showEditForm = false;
 
+        // reload window to update it automatically
         window.location.reload();
-      } catch (error) {
-        console.
+      } catch (error) { // catch errors
         console.error('Error updating event:', error.message);
       }
     },
+
+    // formatting the dates of the events
     formatDate(date) {
     // Increment the day by one
     const adjustedDate = new Date(date);
@@ -197,6 +227,7 @@ export default {
 };
 </script>
 
+<!--General styling of the application-->
 <style>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

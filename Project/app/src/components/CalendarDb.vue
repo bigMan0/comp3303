@@ -1,7 +1,15 @@
+<!-- COMP 3033 - Full-Stack Cloud Computing
+     Final Project: Calendar Web Application
+     Authors: Cameron Burgoyne (162210b) and Kylie DeViller (162298d)
+     Date: April 5 2024 -->
+
+<!--Display contents file-->
+
 <template>
   <div>
     <ul>
       <li v-for="post in posts" :key="post._id">
+        <!--Content that is displayed on the calendar from database-->
         <strong>{{ post.title }}</strong> - {{ formatDate(post.date) }}
       </li>
     </ul>
@@ -9,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'; // importing the axios library
 
 export default {
   props: {
@@ -24,6 +32,7 @@ export default {
 
   async created() {
     try {
+      // get the date from the database
       const response = await axios.get('http://localhost:3001/calendar', {
         params: {
           date: this.date 

@@ -1,4 +1,12 @@
+<!-- COMP 3033 - Full-Stack Cloud Computing
+     Final Project: Calendar Web Application
+     Authors: Cameron Burgoyne (162210b) and Kylie DeViller (162298d)
+     Date: April 5 2024 -->
+
+<!--Days Files-->
+
 <template>
+  <!--Assigning the current date-->
   <li
     class="calendar-day"
     :class="{
@@ -7,6 +15,7 @@
     }"
   >
     <span>{{ label }}</span>
+    <!--Diaplys the event-->
     <div v-if="hasEventForDay" class="event-box">
       <div class="event-title">{{ eventTitle }}</div>
     </div>
@@ -14,6 +23,7 @@
 </template>
 
 <script>
+// importing libraries
 import dayjs from "dayjs";
 import axios from 'axios';
 
@@ -33,20 +43,21 @@ export default {
     try {
       const response = await axios.get('http://localhost:3001/calendar', {
         params: {
-          date: this.day.date // Use the date associated with the calendar item
+          date: this.day.date // use the date associated with the calendar item
         }
       });
       this.posts = response.data;
       this.hasEventForDay = this.posts.some(post => post.date.substring(0, 10) === this.day.date);
       if (this.hasEventForDay) {
-        this.eventTitle = this.getTitleByDate(this.day.date);
+        this.eventTitle = this.getTitleByDate(this.day.date); // gets the data from the event on the specified date
       }
-    } catch (e) {
+    } catch (e) { // catching errors
       this.errors.push(e);
     }
   },
 
   methods: {
+    // title of the event to be displayed
     getTitleByDate(date) {
       const post = this.posts.find(post => post.date.substring(0, 10) === date);
       return post ? post.title : 'No title found';
@@ -98,7 +109,7 @@ export default {
   height: var(--day-label-size);
 }
 
-/* displaying the events */
+/* displaying the events in a box */
 .event-box {
   position: absolute;
   top: 25px;

@@ -1,3 +1,10 @@
+<!-- COMP 3033 - Full-Stack Cloud Computing
+     Final Project: Calendar Web Application
+     Authors: Cameron Burgoyne (162210b) and Kylie DeViller (162298d)
+     Date: April 5 2024 -->
+
+<!--Modal file-->
+
 <template>
     <transition name="modal-fade">
       <div class="modal-backdrop">
